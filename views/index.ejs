@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Tailwind  -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .chessboard {
+            /* display: grid;
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            grid-template-rows: repeat(8, minmax(0, 1fr)); */
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+            height: 400px;
+            transform: rotate(0deg);
+        }
+
+        .piece.white {
+            color: white;
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 1));
+        }
+
+        .piece.black {
+            color: black;
+        }
+
+        .flipped {
+            transform: rotate(180deg);
+        }
+
+        .square {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            width: 50px;
+
+        }
+
+        .square.light {
+            background-color: #f0d9b5;
+        }
+
+        .square.dark {
+            background-color: #b58863;
+        }
+
+        .piece {
+            font-size: 36px;
+            cursor: pointer;
+        }
+
+        .piece.draggable {
+            cursor: grab;
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        /* Rotate pieces for black player */
+        .flipped .piece {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="bg-green-500 text-white px-6 py-4 flex justify-between items-center shadow-md">
+        <!-- Brand / Title -->
+        <div class="text-2xl font-bold tracking-wide">
+            ♟️ ChessMaster
+        </div>
+
+        <!-- Links -->
+        <div class="flex space-x-4 items-center">
+            <a href="https://github.com/your-username" target="_blank" class="hover:text-gray-400 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-6 w-6" viewBox="0 0 24 24">
+                    <path
+                        d="M12 .5C5.648.5.5 5.648.5 12c0 5.088 3.292 9.398 7.86 10.932.575.105.785-.25.785-.555 0-.275-.01-1.007-.015-1.975-3.197.695-3.872-1.54-3.872-1.54-.523-1.328-1.278-1.682-1.278-1.682-1.045-.715.08-.7.08-.7 1.155.082 1.763 1.184 1.763 1.184 1.027 1.757 2.695 1.25 3.35.957.105-.744.403-1.25.732-1.537-2.55-.29-5.233-1.273-5.233-5.66 0-1.25.445-2.273 1.177-3.072-.118-.292-.51-1.464.11-3.052 0 0 .96-.31 3.145 1.18.913-.254 1.892-.38 2.865-.385.973.005 1.952.131 2.865.385 2.185-1.49 3.145-1.18 3.145-1.18.62 1.588.228 2.76.112 3.052.735.8 1.175 1.822 1.175 3.072 0 4.398-2.69 5.368-5.255 5.653.415.355.785 1.057.785 2.13 0 1.54-.015 2.782-.015 3.162 0 .31.205.665.79.553C20.21 21.39 23.5 17.09 23.5 12c0-6.352-5.148-11.5-11.5-11.5z" />
+                </svg>
+            </a>
+            <a href="https://linkedin.com/in/your-profile" target="_blank" class="hover:text-gray-400 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-6 w-6" viewBox="0 0 24 24">
+                    <path
+                        d="M4.98 3.5C4.98 4.6 4.1 5.5 3 5.5s-2-.9-2-2 .9-2 2-2 2 .9 2 2zM.5 8h5V24h-5V8zM8.5 8h4.7v2.3h.1c.6-1 2.1-2.1 4.4-2.1 4.7 0 5.6 3.1 5.6 7.2V24h-5v-6.8c0-1.6 0-3.7-2.3-3.7-2.3 0-2.7 1.8-2.7 3.6V24h-5V8z" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="role mx-auto  text-center w-full p-4">
+
+
+    </div>
+
+    <div class="bg-zinc-900 h-screen gap-6 w-full flex flex-col md:flex-row items-center  justify-center text-white text-lg">
+
+
+        <div class=" w-[200px] h-[400px] flex flex-col gap-2 text-center overflow-hidden ">
+            <div class="mx-auto w-full text-center text-lg">
+                White history
+            </div>
+            <div class="whitehistory">
+
+            </div>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+
+            <div class="statusBar text-white text-lg">Waiting for opponents . . .</div>
+            <div class="chessboard w-96 h-96 bg-red-500 "></div>
+        </div>
+        <div class="w-[200px] h-[400px] flex flex-col gap-2 text-center  overflow-hidden">
+            <div class="mx-auto  w-full text-center text-lg">
+                Black history
+            </div>
+            <div class="blackhistory">
+
+            </div>
+        </div>
+
+    </div>
+    <!-- Socket IO -->
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+        crossorigin="anonymous"></script>
+    <!-- Chess js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
+        integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="/js/chessgame.js"></script>
+
+</body>
+
+</html>
