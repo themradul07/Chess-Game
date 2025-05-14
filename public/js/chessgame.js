@@ -172,7 +172,7 @@ socket.on("move", (move) => {
 );
 socket.on("gameStarted", () => {
     // alert("Game Started");
-    statusBar.innerHTML = "Game Started.....";
+    statusBar.innerHTML = "White's Turn";
     // playMusic(startMusic);
 
     renderBoard();
@@ -206,4 +206,14 @@ socket.on("history", (move) => {
     }
 })
 
-// renderBoard()
+socket.on("turn", (turn) => {
+    if (turn === 'w') {
+        statusBar.innerHTML = "White's Turn";
+    }
+    else {
+        statusBar.innerHTML = "Black's Turn";
+    }
+});
+
+
+renderBoard()

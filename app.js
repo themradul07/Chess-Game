@@ -27,7 +27,8 @@ io.on("connection", (uniquesocket) => {
     console.log("Number of players: " + noofplayers);
     if (noofplayers >= 2) {
        console.log("Game started");
-        io.emit("gameStarted");
+        io.emit("gameStarted", chess.fen());
+        chess.reset();
        
     }
 
@@ -69,6 +70,7 @@ io.on("connection", (uniquesocket) => {
                 uniquesocket.emit("invalidMove", move);
             }
             io.emit("history", move)
+            io.emit("turn", chess.turn());  
            
         }
         catch (err) {
