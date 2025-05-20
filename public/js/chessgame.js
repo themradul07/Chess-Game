@@ -25,6 +25,13 @@ function stopMusic(e) {
     e.currentTime = 0;
 }
 
+function resetall() {
+    statusBar.innerHTML = " ";
+    wHistory.innerHTML = "";
+    bHistory.innerHTML = "";
+    roleElement = '';
+}
+
 const renderBoard = () => {
     const board = chess.board();
     boardElement.innerHTML = "";
@@ -158,32 +165,16 @@ socket.on("spectator", (params) => {
 
 });
 
+// RELATED TO THE MOVES
 socket.on("boardstate", function (fen) {
     chess.load(fen);
     renderBoard();
 })
 
-
 socket.on("move", (move) => {
     chess.move(move);
     renderBoard();
 
-}
-);
-socket.on("gameStarted", () => {
-    // alert("Game Started");
-    statusBar.innerHTML = "White's Turn";
-    // playMusic(startMusic);
-
-    renderBoard();
-
-});
-
-// invalidmove
-socket.on("invalidMove", (move) => {
-    playMusic(invalidMoveMusic);
-    console.log("Invalid move", move);
-    statusBar.innerHTML = "Invalid Move";
 });
 
 socket.on("history", (move) => {
@@ -213,6 +204,70 @@ socket.on("turn", (turn) => {
     else {
         statusBar.innerHTML = "Black's Turn";
     }
+});
+
+socket.on("checkmate", (winner) => {
+    statusBar.innerText = `Checkmate! ${winner} wins.`;
+});
+
+socket.on("stalemate", (by) => {
+    statusBar.innerText = `Stalemate! Game drawn.`;
+});
+
+socket.on("draw", (reason) => {
+    statusBar.innerText = `Draw! Reason: ${reason}`;
+});
+
+// Ending of the moves
+
+socket.on("gameongoing", function (fen) {
+    chess.load(fen);
+    if (playerRole == null) {
+        statusBar.innerHTML = "You can only watch the game";
+    }
+    renderBoard();
+})
+
+
+
+socket.on("playerleft", (fen) => {
+    chess.load(fen);
+    alert("The player left the game");
+    resetall();
+    renderBoard();
+
+}
+)
+
+socket.on("gameStarted", () => {
+    // alert("Game Started");
+
+
+    statusBar.innerHTML = "White's Turn";
+
+    // playMusic(startMusic);
+
+    renderBoard();
+
+});
+
+
+// invalidmove
+socket.on("invalidMove", (move) => {
+    playMusic(invalidMoveMusic);
+    console.log("Invalid move", move);
+    statusBar.innerHTML = "Invalid Move";
+});
+
+
+
+
+
+socket.on("gameOver", (winner) => {
+    statusBar.innerText = `Game Over! ${winner} wins.`;
+    // playMusic(gameOverMusic);
+
+    renderBoard();  
 });
 
 
