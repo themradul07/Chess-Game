@@ -232,8 +232,9 @@ socket.on("gameongoing", function (fen) {
 
 socket.on("playerleft", (fen) => {
     chess.load(fen);
-    alert("The player left the game");
-    resetall();
+    alert("Some one left the game So please refresh the page");
+    statusBar.innerHTML = "Some one left the game So please refresh the page";
+  
     renderBoard();
 
 }
